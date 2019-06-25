@@ -38,12 +38,18 @@ public class VirusSaveAndLoadGameImpl implements SaveAndLoadGame {
 		loadSavedGames();
 	}
 
+	/**
+	 * Method to save Game.
+	 */
 	@Override
 	public void saveGame(GameData gameData, String playingFileName) {
 		startSaveGame(gameData, playingFileName);
 		LOG.info(GAME_SAVED_MESSAGE);
 	}
 
+	/**
+	 * Method to retrieve as saved game.
+	 */
 	@Override
 	public Map<String, GameData> loadSavedGame() {
 		if(saveGames.getSavedGamesMap().size() != 0) { 
@@ -59,6 +65,11 @@ public class VirusSaveAndLoadGameImpl implements SaveAndLoadGame {
 		
 	}
 
+	/**
+	 * Method to start saving game.
+	 * @param gameData
+	 * @param playingFileName
+	 */
 	private void startSaveGame(GameData gameData, String playingFileName) {
 		Map<String, GameData> savedGamesMap = saveGames.getSavedGamesMap();
 		int deletedIndexNumber = ZERO;
@@ -85,6 +96,14 @@ public class VirusSaveAndLoadGameImpl implements SaveAndLoadGame {
 		}
 	}
 
+	/**
+	 * Method to update Map before saving.
+	 * @param savedGamesMap
+	 * @param fileNameWithIdentifier
+	 * @param deletedIndexNumber
+	 * @param gameData
+	 * @return
+	 */
 	private Map<String, GameData> updateSavedGamesMap(Map<String, GameData> savedGamesMap,
 			String fileNameWithIdentifier, int deletedIndexNumber, GameData gameData) {
 		Map<String, GameData> newSavedGamesMap = new LinkedHashMap<>();
@@ -106,6 +125,11 @@ public class VirusSaveAndLoadGameImpl implements SaveAndLoadGame {
 		return newSavedGamesMap;
 	}
 	
+	/**
+	 * Method to handle game on delete.
+	 * @param savedGameMap
+	 * @return
+	 */
 	private int processDeleteGame(Map<String, GameData> savedGameMap) {
 		LOG.info(DELETE_GAME_MESSAGE);
 		showListOfSavedGames(savedGameMap);
@@ -115,6 +139,12 @@ public class VirusSaveAndLoadGameImpl implements SaveAndLoadGame {
 		return userChoice;
 	}
 
+	/**
+	 * Method to identify and delete seleted game.
+	 * @param userChoice
+	 * @param savedGamesMap
+	 * @return
+	 */
 	private boolean deleteSelectedGame(int userChoice, Map<String, GameData> savedGamesMap) {
 		Set<String> savedFileNameSet = savedGamesMap.keySet();
 		
@@ -129,6 +159,12 @@ public class VirusSaveAndLoadGameImpl implements SaveAndLoadGame {
 		return Boolean.FALSE;
 	}
 
+	/**
+	 * Method to select a game.
+	 * @param userChoice
+	 * @param savedGamesMap
+	 * @return
+	 */
 	private Map<String, GameData> getSelectedGame(int userChoice, Map<String, GameData> savedGamesMap) {
 		Set<String> savedFileNameSet = savedGamesMap.keySet();
 		Map<String, GameData> selectedGame = new HashMap<>();
@@ -143,6 +179,11 @@ public class VirusSaveAndLoadGameImpl implements SaveAndLoadGame {
 		return selectedGame;
 	}
 
+	/**
+	 * Method to read user choice.
+	 * @param maxValue
+	 * @return
+	 */
 	private int getUserSelectedGameOption(int maxValue) {
 		int userChoice = ZERO;
 		while (!(userChoice > ZERO & userChoice <= maxValue)){
@@ -155,6 +196,10 @@ public class VirusSaveAndLoadGameImpl implements SaveAndLoadGame {
 		return userChoice;
 	}
 
+	/**
+	 * Method to show saved games.
+	 * @param savedGamesMap
+	 */
 	private void showListOfSavedGames(Map<String, GameData> savedGamesMap) {
 		Set<String> savedFileNameSet = savedGamesMap.keySet();
 		LOG.info("Option|   FileName   | SavedDate");
@@ -176,6 +221,9 @@ public class VirusSaveAndLoadGameImpl implements SaveAndLoadGame {
 		this.saveGames = saveGames;
 	}
 
+	/**
+	 * Method to load saved games from file.
+	 */
 	private void loadSavedGames() {
 		Object object = utils.readFile(SAVED_FILE + SAV_FILE_EXTENTION);
 		if (object != null & object instanceof SaveGames) {

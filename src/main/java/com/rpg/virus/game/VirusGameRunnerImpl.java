@@ -73,6 +73,10 @@ public class VirusGameRunnerImpl implements GameRunner {
 		this.saveAndLoadGame = saveAndLoadGame;
 	}
 
+	/**
+	 * Method to start new Game with new Player.
+	 * @return String
+	 */
 	@Override
 	public String startNewGame() {
 		utils.clearTerminal();
@@ -83,6 +87,10 @@ public class VirusGameRunnerImpl implements GameRunner {
 		return playGame(data, null);
 	}
 
+	/**
+	 * Method to load saved game.
+	 * @return String
+	 */
 	@Override
 	public String loadSavedGame() {
 		Map<String, GameData> selectedGame = saveAndLoadGame.loadSavedGame();		
@@ -100,6 +108,7 @@ public class VirusGameRunnerImpl implements GameRunner {
 	 * Method for playing the game
 	 * 
 	 * @param playerInfo
+	 * @return String
 	 */
 	private String playGame(GameData gameData, String playingFileName) {
 		utils.clearTerminal();		
@@ -173,12 +182,29 @@ public class VirusGameRunnerImpl implements GameRunner {
 
 		return null;
 	}
+	
+	/**
+	 * Method to fight with virus
+	 * @param playerInfo
+	 * @param virusInfo
+	 * @param virusParams
+	 * @return String
+	 */
 	private String startFighting(PlayerInfo playerInfo, VirusInfo virusInfo, VirusParams virusParams){
 		utils.clearTerminal();
 		String fightResult = startFightingWithVirus(playerInfo, virusInfo, virusParams);
 		checkAndUpdateSkill(playerInfo);
 		return fightResult;
 	}
+	
+	/**
+	 * Method to save game.
+	 * @param gameData
+	 * @param playerInfo
+	 * @param virusInfo
+	 * @param virusParams
+	 * @param playingFileName
+	 */
 	private void saveGame(GameData gameData, PlayerInfo playerInfo, VirusInfo virusInfo, VirusParams virusParams, String playingFileName){
 		gameData = new GameData();
 		gameData.setPlayerInfo(playerInfo);
@@ -188,6 +214,10 @@ public class VirusGameRunnerImpl implements GameRunner {
 		saveAndLoadGame.saveGame(gameData, playingFileName);
 	}
 	
+	/**
+	 * Method to take decision to continue after save or not
+	 * @return Boolean 
+	 */
 	private boolean continueGameAfteSave() {
 		int userInput = ZERO;
 		LOG.info("");
@@ -206,6 +236,11 @@ public class VirusGameRunnerImpl implements GameRunner {
 		return Boolean.FALSE;
 	}
 	
+	/**
+	 * Method to check whether user entered is a valid option 
+	 * @param userInput
+	 * @return
+	 */
 	private boolean isAValidContinueGameOption(int userInput){
 		if((userInput == ONE | userInput == TWO)){
 			return Boolean.TRUE;
@@ -213,6 +248,12 @@ public class VirusGameRunnerImpl implements GameRunner {
 		return Boolean.FALSE;
 	}
 	
+	/**
+	 * Method to Inject Aspirin to virus.
+	 * @param playerInfo
+	 * @param virusInfo
+	 * @param virusParams
+	 */
 	private void injectAspirinToVirus(PlayerInfo playerInfo, VirusInfo virusInfo, VirusParams virusParams) {
 		int aspirinCount = playerInfo.getAspirinList().size();
 		if (aspirinCount >= ONE) {
@@ -223,6 +264,12 @@ public class VirusGameRunnerImpl implements GameRunner {
 		}
 	}
 
+	/**
+	 * Method to process Aspirin.
+	 * @param playerInfo
+	 * @param virusInfo
+	 * @param virusParams
+	 */
 	private void processMultipleAspirin(PlayerInfo playerInfo, VirusInfo virusInfo, VirusParams virusParams) {
 		Map<Integer, String> aspirinOptionMap = new HashMap<>();
 		utils.clearTerminal();
@@ -248,6 +295,12 @@ public class VirusGameRunnerImpl implements GameRunner {
 		}
 	}
 
+	/**
+	 * Method to show all the aspirin in list and create a map with it.
+	 * @param playerInfo
+	 * @param counter
+	 * @param aspirinOptionMap
+	 */
 	private void showAspirinAndUpdateAspirinMap(PlayerInfo playerInfo, AtomicInteger counter,
 			Map<Integer, String> aspirinOptionMap) {
 		playerInfo.getAspirinList().forEach(aspirin -> {
@@ -258,6 +311,12 @@ public class VirusGameRunnerImpl implements GameRunner {
 		});
 	}
 
+	/**
+	 * Method to update virusInfo with Aspirin strength.
+	 * @param playerInfo
+	 * @param virusInfo
+	 * @param aspirinName
+	 */
 	private void injectAspirin(PlayerInfo playerInfo, VirusInfo virusInfo, String aspirinName) {
 		Aspirin aspirin = playerInfo.getAspirinList().stream()
 				.filter(aspirinObj -> aspirinName.equals(aspirinObj.getAspirinName())).findFirst().get();
@@ -278,6 +337,11 @@ public class VirusGameRunnerImpl implements GameRunner {
 		}
 	}
 
+	/**
+	 * Method to update playerInfo with new Aspirin strength.
+	 * @param playerInfo
+	 * @param aspirin
+	 */
 	private void updatePlayerInfoWithNewAspirinStrength(PlayerInfo playerInfo, Aspirin aspirin) {
 		playerInfo.getAspirinList().forEach(aspirinObj -> {
 			if (aspirinObj.getAspirinName().equals(aspirin.getAspirinName())) {
@@ -286,6 +350,10 @@ public class VirusGameRunnerImpl implements GameRunner {
 		});
 	}
 
+	/**
+	 * Method to check whether user is eligible for promotion or aspirin update. 
+	 * @param playerInfo
+	 */
 	private void checkAndUpdateSkill(PlayerInfo playerInfo) {		
 		Aspirin aspirinToBeUpdated = null;
 		List<Aspirin> aspirinListWithEmptyStrength = playerInfo.getAspirinList().stream()
@@ -316,7 +384,11 @@ public class VirusGameRunnerImpl implements GameRunner {
 
 	}
 	
-	
+	/**
+	 * Method to handle Aspirin when strength become zero.
+	 * @param aspirin
+	 * @param playerInfo
+	 */
 	private void handleAspirinWithZeroStrength(Aspirin aspirin, PlayerInfo playerInfo) {
 		
 		LOG.info("Your Aspirin " + aspirin.getAspirinName() + "'s strenght has reached Zero");
@@ -357,6 +429,11 @@ public class VirusGameRunnerImpl implements GameRunner {
 		}
 	}
 	
+	/**
+	 * Method to update PlayerInfo when an Aspirin is Updated from Zero.
+	 * @param playerInfo
+	 * @param aspirinToBeUpdated
+	 */
 	private void updateAspirin(PlayerInfo playerInfo, Aspirin aspirinToBeUpdated){
 		Aspirin newAspirin = null;	
 

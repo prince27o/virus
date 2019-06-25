@@ -28,6 +28,9 @@ public class VirusPlayGameImpl implements PlayGame {
 		this.gameRunner = gameRunner;
 	}
 
+	/**
+	 * Method where for redirecting to all operations in main menu
+	 */
 	@Override
 	public void playGame() {
 		utils.clearTerminal();
@@ -36,7 +39,7 @@ public class VirusPlayGameImpl implements PlayGame {
 		case 1:
 			utils.clearTerminal();
 			String gameResult = startGame();
-			if(gameResult != null & MAIN_MENU.equals(gameResult)) {
+			if (gameResult != null & MAIN_MENU.equals(gameResult)) {
 				playGame();
 			}
 			break;
@@ -53,35 +56,43 @@ public class VirusPlayGameImpl implements PlayGame {
 		}
 	}
 
-	private void showAboutGame(){
+	/**
+	 * Show About the game in String as char in thread
+	 */
+	private void showAboutGame() {
 		utils.clearTerminal();
 		LOG.info("________________________ About Game_________________________");
-		for(int counter = ZERO; counter < ABOUT_GAME.length();counter+=1) {		
-			
+		for (int counter = ZERO; counter < ABOUT_GAME.length(); counter += 1) {
+
 			LOG.info(ABOUT_GAME.charAt(counter));
-			if(DOT.charAt(0) == ABOUT_GAME.charAt(counter)){
+			if (DOT.charAt(0) == ABOUT_GAME.charAt(counter)) {
 				LOG.info("");
 			}
 			try {
 				Thread.sleep(10);
 			} catch (InterruptedException e) {
-				
+
 			}
 		}
 		LOG.info("");
 		utils.pressOneToContinue();
 	}
-	
+
+	/**
+	 * Method to start/load a game
+	 * 
+	 * @return
+	 */
 	private String startGame() {
 		int gameChoice = getUserSelectedValue(GAME_MENU);
 		switch (gameChoice) {
 		case 1:
 			utils.clearTerminal();
 			return gameRunner.startNewGame();
-		case 2:			
+		case 2:
 			return gameRunner.loadSavedGame();
-		case 3:			
-			return MAIN_MENU;		
+		case 3:
+			return MAIN_MENU;
 		default:
 			startGame();
 			break;
@@ -119,7 +130,7 @@ public class VirusPlayGameImpl implements PlayGame {
 		LOG.info("| 3) Exit                                   |");
 		LOG.info("|___________________________________________|");
 	}
-	
+
 	/**
 	 * Method checks whether choice read from console is valid.
 	 * 
@@ -131,9 +142,11 @@ public class VirusPlayGameImpl implements PlayGame {
 		List<Integer> mainChoice = Arrays.asList(choices);
 		return mainChoice.contains(value) ? Boolean.TRUE : Boolean.FALSE;
 	}
-	
+
 	/**
-	 * Method read the input value from the console from Game options/ Menu Option
+	 * Method read the input value from the console from Game options/ Menu
+	 * Option
+	 * 
 	 * @return
 	 */
 	private int getUserSelectedValue(String optionName) {
@@ -156,5 +169,5 @@ public class VirusPlayGameImpl implements PlayGame {
 
 		return optedValue;
 	}
-	
+
 }
