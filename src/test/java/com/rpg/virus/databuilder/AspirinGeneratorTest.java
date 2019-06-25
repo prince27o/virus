@@ -1,4 +1,4 @@
-package com.rpg.virus.builder;
+package com.rpg.virus.databuilder;
 
 import org.junit.Before;
 import org.junit.Test;
